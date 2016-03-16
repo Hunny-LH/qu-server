@@ -201,12 +201,12 @@
 		videoUrl,c.thumbnails_url
 		thumbnailsUrl,c.description,c.upload_time
 		uploadTime,c.show_times showTimes,c.comment_num
-		commentNum,c.like_num likeNum,c.show_falsetimes falseShowTimes,
-		c.comment_falsenum falseCommentNum,c.like_falsenum
+		commentNum,c.like_num likeNum,c.fake_show_times falseShowTimes,
+		c.fake_comment_num falseCommentNum,c.fake_like_num
 		falseLikeNum,c.c_status cStatus,c.is_private
-		isPrivate,c.sinashare_num sinashareNum,c.sinashare_falsenum
+		isPrivate,c.sinashare_num sinashareNum,c.fake_sinashare_num
 		sinashareFalseNum,c.quanshare_num
-		quanshareNum,c.quanshare_falsenum quanshareFalseNum,a.nick_name
+		quanshareNum,c.fake_quanshare_num quanshareFalseNum,a.nick_name
 		nickName from tab_content_info c,tab_user_info a where
 		c.uid=a.uid and c.c_status in (0,3,4)
 		<if test="nickName != null and '' != nickName">
@@ -313,12 +313,12 @@
 		videoUrl,c.thumbnails_url
 		thumbnailsUrl,c.description,c.upload_time
 		uploadTime,c.show_times showTimes,c.comment_num
-		commentNum,c.like_num likeNum,c.show_falsetimes falseShowTimes,
-		c.comment_falsenum falseCommentNum,c.like_falsenum
+		commentNum,c.like_num likeNum,c.fake_show_times falseShowTimes,
+		c.fake_comment_num falseCommentNum,c.fake_like_num
 		falseLikeNum,c.c_status cStatus,c.is_private
-		isPrivate,c.sinashare_num sinashareNum,c.sinashare_falsenum
+		isPrivate,c.sinashare_num sinashareNum,c.fake_sinashare_num
 		sinashareFalseNum,c.quanshare_num
-		quanshareNum,c.quanshare_falsenum quanshareFalseNum,a.nick_name
+		quanshareNum,c.fake_quanshare_num quanshareFalseNum,a.nick_name
 		nickName from tab_content_info c,tab_user_info a,tab_content_tag
 		b where c.uid=a.uid and c.cid=b.cid and c.c_status in (0,3,4)
 		<if test="nickName != null and '' != nickName">
@@ -421,12 +421,12 @@
 		videoUrl,c.thumbnails_url
 		thumbnailsUrl,c.description,c.upload_time
 		uploadTime,c.show_times showTimes,c.comment_num
-		commentNum,c.like_num likeNum,c.show_falsetimes falseShowTimes,
-		c.comment_falsenum falseCommentNum,c.like_falsenum
+		commentNum,c.like_num likeNum,c.fake_show_times falseShowTimes,
+		c.fake_comment_num falseCommentNum,c.fake_like_num
 		falseLikeNum,c.c_status cStatus,c.is_private
-		isPrivate,c.sinashare_num sinashareNum,c.sinashare_falsenum
+		isPrivate,c.sinashare_num sinashareNum,c.fake_sinashare_num
 		sinashareFalseNum,c.quanshare_num
-		quanshareNum,c.quanshare_falsenum quanshareFalseNum,a.nick_name
+		quanshareNum,c.fake_quanshare_num quanshareFalseNum,a.nick_name
 		nickName from tab_content_info c,tab_user_info
 		a,tab_subject_content b where c.uid=a.uid and c.cid=b.cid and
 		c.c_status in (0,3,4)
@@ -697,7 +697,7 @@
 		tab_set_contentlist b where a.cid=b.cid and b.type=2) and not
 		EXISTS (select 1 from tab_editor_contentrecommend e where
 		a.cid=e.cid and e.recommend=1 ) ORDER BY
-		(show_times+show_falsetimes) DESC LIMIT 100
+		(show_times+fake_show_times) DESC LIMIT 100
 	</select>
 
 	<select id="selectNewWeekHotContentList" resultType="long"
@@ -760,9 +760,9 @@
 		videoUrl,c.thumbnails_url
 		thumbnailsUrl,c.description,c.upload_time
 		uploadTime,c.show_times showTimes,c.comment_num
-		commentNum,c.like_num likeNum,c.show_falsetimes falseShowTimes,
-		c.comment_falsenum falseCommentNum,c.like_falsenum
-		falseLikeNum,c.forward_num forwardNum,c.forward_falsenum
+		commentNum,c.like_num likeNum,c.fake_show_times falseShowTimes,
+		c.fake_comment_num falseCommentNum,c.fake_like_num
+		falseLikeNum,c.forward_num forwardNum,c.fake_forward_num
 		falseForwardNum, c.c_status cStatus,c.title,c.play_time
 		playTime,c.width,c.height,c.longitude,c.latitude,c.location,c.top,c.`keys`
 		as `key` from tab_content_info c where c.c_status!=2 and
@@ -824,10 +824,10 @@
 		select b.*,IFNULL(m.xpls,0) xpls,m.maxcreatetime from ( select
 		cid,uid,thumbnails_url thumbnailsUrl,video_url_hd
 		videoUrlHd,description,create_time uploadTime,show_times
-		showTimes,show_falsetimes falseShowTimes,like_num likeNum
-		,like_falsenum falseLikeNum,forward_num
-		forwardNum,forward_falsenum falseForwardNum ,comment_num
-		commentNum,comment_falsenum falseCommentNum from
+		showTimes,fake_show_times falseShowTimes,like_num likeNum
+		,fake_like_num falseLikeNum,forward_num
+		forwardNum,fake_forward_num falseForwardNum ,comment_num
+		commentNum,fake_comment_num falseCommentNum from
 		tab_content_info where uid=1 and c_status=0 ) b LEFT JOIN (
 		select cid,count(*) xpls,max(a.create_time) maxcreatetime from
 		tab_content_comment a where a.is_new=1 and (a.root_id=0 or
@@ -846,7 +846,7 @@
 
 	<update id="updateContentFalseShowTimes" parameterType="Map">
 		update tab_content_info set
-		show_falsetimes=show_falsetimes+#{num} where cid=#{cid}
+		fake_show_times=fake_show_times+#{num} where cid=#{cid}
 	</update>
 
 	<update id="insertContentDescription" parameterType="Map">
@@ -867,21 +867,21 @@
 
 	<select id="getContentSinaQuan" parameterType="Long"
 		resultType="Map">
-		select c.sinashare_num sinashareNum,c.sinashare_falsenum
-		sinashareFalseNum,c.quanshare_num
-		quanshareNum,c.quanshare_falsenum quanshareFalseNum,c.show_times
-		showTimes,c.show_falsetimes showFalseTimes from tab_content_info
+		select c.sinashare_num sinashareNum,c.fake_sinashare_num
+		falseSinaShareNum,c.quanshare_num
+		quanshareNum,c.fake_quanshare_num quanshareFalseNum,c.show_times
+		showTimes,c.fake_show_times showFalseTimes from tab_content_info
 		c where c.cid=#{cid}
 	</select>
 
 	<update id="updateContentSinaNum" parameterType="Map">
 		update tab_content_info set
-		sinashare_falsenum=sinashare_falsenum+#{num} where cid=#{cid}
+		fake_sinashare_num=fake_sinashare_num+#{num} where cid=#{cid}
 	</update>
 
 	<update id="updateContentQuanNum" parameterType="Map">
 		update tab_content_info set
-		quanshare_falsenum=quanshare_falsenum+#{num} where cid=#{cid}
+		fake_quanshare_num=fake_quanshare_num+#{num} where cid=#{cid}
 	</update>
 
 	<select id="getSetContentList" parameterType="Map"
@@ -898,7 +898,7 @@
 	<select id="querySetContentModels" resultType="SetContentModel">
 		select a.cid,b.uid,a.order_num orderNum,a.create_time createTime from
 		tab_set_contentlist a,tab_content_info b where a.cid=b.cid and
-		b.c_status=0 and b.is_private=0 and a.type=1 order by order_num
+		b.c_status=0 and b.is_private=0 and a.type=1 order by a.order_num
 		asc
 	</select>
 

@@ -55,6 +55,7 @@ public class ContentModel implements Serializable {
 	private int falseLikeNum;//假喜欢数
 	private int falseShowTimes; //假播放次数
 	private int falseForwardNum;//假转发数
+	private int falseSinaShareNum;
 	
 	private int isShow;//投放标志
 	private String key;//唯一标识字符串
@@ -448,5 +449,13 @@ public class ContentModel implements Serializable {
 				+ falseCommentNum + ", falseLikeNum=" + falseLikeNum
 				+ ", falseShowTimes=" + falseShowTimes + ", falseForwardNum="
 				+ falseForwardNum + ", isShow=" + isShow + ", key=" + key + "]";
+	}
+
+	public int getFalseSinaShareNum() {
+		return falseSinaShareNum;
+	}
+
+	public void setFalseSinaShareNum(int falseSinaShareNum) {
+		this.falseSinaShareNum = falseSinaShareNum;
 	}
 }

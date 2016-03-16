@@ -23,7 +23,7 @@
 		avatarUrl,a.nick_name nickName,a.create_time
 		createTime,a.last_login_time
 		lastLoginTime,a.mobile,a.status,a.follow_num
-		followNum,a.fans_num fansNum,a.fans_falsenum
+		followNum,a.fans_num fansNum,a.fake_fans_num
 		fansFalseNum,a.friend_num friendNum,a.is_authentication
 		isAuthentication from tab_user_info a where a.role_id=3
 		<if test="nickname != null and '' != nickname">
@@ -119,7 +119,7 @@
 		a.uid,a.avatar_url as avatarUrl,a.nick_name
 		nickName,a.create_time createTime,a.last_login_time
 		lastLoginTime,a.mobile,a.status,a.follow_num
-		followNum,a.fans_num fansNum,a.fans_falsenum
+		followNum,a.fans_num fansNum,a.fake_fans_num
 		fansFalseNum,a.friend_num friendNum,a.is_authentication
 		isAuthentication from tab_user_info a where a.role_id=3
 		<if test="nickname != null and '' != nickname">
@@ -312,7 +312,7 @@
         ]]>
 		GROUP BY m.uid ) b ON a.uid=b.uid where a.status=1 and a.uid>1
 		and a.uid not in (select uid from tab_set_userlist) ORDER BY
-		((a.fans_num+a.fans_falsenum)*0.5+IFNULL(b.zs,0)) DESC LIMIT 302
+		((a.fans_num+a.fake_fans_num)*0.5+IFNULL(b.zs,0)) DESC LIMIT 302
 	</select>
 	<insert id="inserOpenFriend" parameterType="OpenFriend">
 		insert into tab_user_3thfriend (uid, open_type, open_uid,
@@ -402,7 +402,7 @@
 		avatarUrl,a.nick_name nickName,a.create_time
 		createTime,a.last_login_time
 		lastLoginTime,a.mobile,a.status,a.follow_num
-		followNum,a.fans_num fansNum,a.fans_falsenum
+		followNum,a.fans_num fansNum,a.fake_fans_num
 		fansFalseNum,a.friend_num friendNum from tab_user_info a where
 		a.role_id=4
 		<if test="nickname != null and '' != nickname">
